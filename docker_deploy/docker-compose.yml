@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  ai_service:
+    image: python-service:1.0
+    restart: unless-stopped
+    volumes:
+      - ../rest_services:/home
+    ports:
+      - 8080:8080
+    command: >
+      bash -c "
+      pip install -r requirements.txt
+      && python main.py"
+      
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+   
+    
